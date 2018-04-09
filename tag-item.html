@@ -21,84 +21,89 @@ tag-item is a tag element used by tags-input to show tags with a closed button.
 @demo
 -->
 <dom-module id="tag-item">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        box-sizing: border-box;
+        font-family: 'Roboto', 'Noto', sans-serif;
+      }
 
-  <style>
-    :host {
-      display: block;
-      box-sizing: border-box;
-      font-family: 'Roboto', 'Noto', sans-serif;
-    }
-    .tag-value{
-      display: inline-block;
-      vertical-align: middle;
-    }
-    .tag-item-container{
-      background-color: var(--light-primary-color);
-      float: left;
-      margin-left: 6px;
-      margin-bottom: 3px;
-    }
-    .large.tag-item-container{
-      border-radius: 20px;
-      padding-left:14px;
-    }
-    .medium.tag-item-container{
-      border-radius: 17px;
-      padding-left: 11px;
-    }
-    .small.tag-item-container{
-      border-radius: 14px;
-      padding-left: 9px;
-    }
+      .tag-value {
+        display: inline-block;
+        vertical-align: middle;
+      }
 
-    .large{
-      font-size:18px;
-    }
-    .large paper-icon-button{
+      .tag-item-container {
+        background-color: var(--light-primary-color);
+        float: left;
+        margin-left: 6px;
+        margin-bottom: 3px;
+      }
+
+      .large.tag-item-container {
+        border-radius: 20px;
+        padding-left: 14px;
+      }
+
+      .medium.tag-item-container {
+        border-radius: 17px;
+        padding-left: 11px;
+      }
+
+      .small.tag-item-container {
+        border-radius: 5px;
+        padding: 3px 10px;
+      }
+
+      .large {
+        font-size: 18px;
+      }
+
+      .large paper-icon-button {
         height: 40px;
         width: 40px;
-    }
-    .large paper-icon-button::shadow #icon{
+      }
+
+      .large paper-icon-button::shadow #icon {
         width: 22px;
         height: 22px;
-    }
+      }
 
-    .medium paper-icon-button{
+      .medium paper-icon-button {
         height: 34px;
         width: 34px;
-    }
-    .medium{
-      font-size:14px;
-    }
-    .medium paper-icon-button::shadow #icon{
+      }
+
+      .medium {
+        font-size: 14px;
+      }
+
+      .medium paper-icon-button::shadow #icon {
         width: 18px;
         height: 18px;
-    }
-    .small paper-icon-button{
-        height: 30px;
-        width: 30px;
-    }
-    .small{
-      font-size:12px;
-    }
-    .small paper-icon-button::shadow #icon{
+      }
+
+      .small paper-icon-button {
+        height: 16px;
+        width: 16px;
+        padding: 0;
+      }
+
+      .small {
+        font-size: 12px;
+      }
+
+      .small paper-icon-button::shadow #icon {
         width: 14px;
         height: 14px;
-    }
-
-
-  </style>
-
-  <template>
-      <div style$="{{_containerColor(tagColor, fontColor)}}" class$="{{_containerClass(size)}}">
-        <span class="tag-value">{{value}}</span>
-        <template is="dom-if" if="{{enableRemove}}">
-          <paper-icon-button on-tap="_removeItem" icon="icons:cancel"></paper-icon-button>
-        </template>
-        <template is="dom-if" if="{{!enableRemove}}">
-          <paper-icon-button style="width:0px;visibility:hidden;" on-tap="remove" icon="icons:cancel"></paper-icon-button>
-        </template>
-      </div>
+      }
+    </style>
+    <div style$="{{_containerColor(tagColor, fontColor)}}" class$="{{_containerClass(size)}}">
+      <span class="tag-value">{{value}}</span>
+      <template is="dom-if" if="{{enableRemove}}" restamp>
+        <paper-icon-button on-tap="_removeItem" icon="icons:cancel"></paper-icon-button>
+      </template>
   </template>
 
 </dom-module>
@@ -117,63 +122,63 @@ tag-item is a tag element used by tags-input to show tags with a closed button.
       /**
       * index of the tag
       */
-       index:Number,
+      index: Number,
       /**
       * size of the tags, possible values: small, medium, large
       */
-       size:{
-        type:String,
-        value:'large'
-       },
-       /**
-       * CSS color of tag
-       */
-       tagColor:String,
-       /**
-       * CSS color of text and remove button
-       */
-       fontColor:String,
-       /**
-       * Boolean flag to indicate if enable remove operation
-       */
-       enableRemove:{
-        type:Boolean,
-        value:true
+      size: {
+        type: String,
+        value: 'large'
+      },
+      /**
+      * CSS color of tag
+      */
+      tagColor: String,
+      /**
+      * CSS color of text and remove button
+      */
+      fontColor: String,
+      /**
+      * Boolean flag to indicate if enable remove operation
+      */
+      enableRemove: {
+        type: Boolean,
+        value: true
       }
       ,
       /**
       * value of the tag
       */
-       value:String
+      value: String
 
     },
     /**
      * _containerColor is the internal method to compute background style
      *
      */
-     _containerColor:function(tagColor, fontColor){
+    _containerColor: function (tagColor, fontColor) {
       var styles = []
-      if (typeof(tagColor) != "undefined"){
+      if (typeof (tagColor) != "undefined") {
         styles.push("background-color:" + tagColor);
       }
-      if (typeof(fontColor) != "undefined"){
+      if (typeof (fontColor) != "undefined") {
         styles.push("color:" + fontColor);
       }
       return styles.join(";");
-     },
+    },
     /**
      * _containerClass is the internal method to compute size css name
      *
      */
-     _containerClass:function(size){
-       return size + " tag-item-container";
-     },
+    _containerClass: function (size) {
+      return size + " tag-item-container";
+    },
     /**
      * Handler for removing the tag item
      */
-     _removeItem: function() {
+    _removeItem: function () {
       if (this.enableRemove === true) {
-        this.fire('tag-item-remove', {index: this.index});
+        this.fire('tag-item-remove', { index: this.index });
       }
     }
 
